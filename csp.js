@@ -10,8 +10,8 @@ function Square(variable, ind, row, col, neighbors, constraints) {
   this.neighbors = neighbors;
 }
 
-let MAX = 5;
-let arr = [];
+let MAX = 4;
+window.arr = [];
 let c = 0;
 let width = MAX;
 let wm = MAX - 1;
@@ -65,78 +65,70 @@ for (var ix = 0; ix < MAX; ix++) {
   let column = arr.filter(sqx => sqx.col === ix); //get current col to iterate
   // let sq = column[Math.floor(Math.random() * column.length)];
   let q  = findBest(column);
-  q = q[0] || q;
+  // q = q[0] || q;
+  console.log("INIT", q.ind);
   q.variable = 1;
+  arr.forEach(s => {
+    s.flicts = updateCon(s);
+  });
+
 }
 let xo;
-while(conx == true){
+
+function checkSo() {
+  var x = arr.filter(sx => {
+    console.log(sx.variable)
+    return (sx.variable === 1 && sx.flicts > 0);
+  });
+  return x;
+}
+// let checkSol = checkSo().length;
+while(conx){
   let old =0; let nold = 0; let list; let badSq; let newSq; let column;
 
-  itt++;
-  if(itt === 52) conx = false;
 
-  // list = arr.filter(sz=> (sz.variable === 1 ));
-  // badSq = list[Math.floor(Math.random() * list.length)];
-  // if(!badSq) { break; }
+
   badSq = findQueens(arr); //find all queens
   let w = findWorst(badSq); //find the highest conflict queens
-  if(w.length >= 1)  {console.log("asd", badSq); badSq = w[Math.floor(Math.random() * w.length)];} else {badSq = w; }
-  if(xo){
-    if(badSq.col === xo.col) {
-      badSq = findQueens(arr);
-      let r = Math.floor(Math.random() * badSq.length);
-      badSq = badSq[r];
-      console.log(r);
-    }
-  }
-  xo = badSq;
+  badSq = w;
   let colind = badSq.col;
   column = arr.filter(sqx => (sqx.col === colind && sqx.ind !== badSq.ind)); //find all sq in bad queen col
   arr.forEach(s => {
     s.flicts = updateCon(s);
     old += s.flicts;
   });
-  w = findBest(column);
-  // newSq = findBest(column); // get sq with lowest conflicts
-  if(w.length > 1)  {console.log("asd", badSq); newSq = w[Math.floor(Math.random() * w.length)];} else {newSq = w; }
-
+  newSq = findBest(column);
 
   newSq.variable = 1;
   badSq.variable = 0;
   console.log(newSq.variable, badSq.variable);
 
-  // if(newSq.ind === badSq.ind) continue;
-  // let t = arr.find(s=> s.ind === newSq.ind);
-  // let bs = arr.find(s=> s.ind === badSq.ind);
-  // t.variable = 1; bs.variable = 0;
   arr.forEach(s => {
     s.flicts = updateCon(s);
     nold += s.flicts;
   });
   // console.log('newSq', newSq.ind, 'badSq', badSq.ind, 'cons ', newSq.flicts, ' - ', badSq.flicts);
-
+  if(badSq.flicts !== 0) {
   if(old === nold) {
     var r = Math.floor(Math.random() * 2);
     if(r === 1) {
       newSq.variable = 0;
       badSq.variable =1;
     }
-  }
-  else if(old < nold){
+  } else if (old < nold){
     newSq.variable = 0;
-    badSq.variable =1;
-    // arr.forEach(s => {
-    //   s.flicts = updateCon(s);
-    // });
-  }
+    badSq.variable = 1;
+  }}
+
   console.log("test" , old, nold);
   arr.forEach(s => {
     s.flicts = updateCon(s);
-    old += s.flicts;
   });
   // t.variable = 1;
 
   // less.variable = 1;
+  itt++;
+  if(itt === 50 ) conx = false;
 
 }
 arr.forEach(s => {
@@ -171,7 +163,9 @@ function findWorst(arrx) {
     }
   }
   if(temp.length > 1){
-    if(smallest.flicts <= temp[0].flicts) return temp;
+    if(smallest.flicts <= temp[0].flicts)  {
+      temp.push(smallest);
+      return temp[Math.floor(Math.random() * temp.length)];}
   }  return smallest;
 }
 function findBest(arrx) {
@@ -185,18 +179,16 @@ function findBest(arrx) {
     }
   }
   if(temp.length > 1){
-    if(smallest.flicts >= temp[0].flicts) return temp;
+    if(smallest.flicts >= temp[0].flicts) {
+      temp.push(smallest);
+      return temp[Math.floor(Math.random() * temp.length)];}
   }
   return smallest;
 }
 function updateCon(square) {
-  // cons = comps.filter(sqy => ((sqy.row === sq.row || sqy.col === sq.col) || ((sqy.ind === sq.ind+(wm*y) || sqy.ind === sq.ind +(wa*y)) || (sqy.ind === sq.ind - (wa*y) || sqy.ind === sq.ind -(wm*y))) ) )
   return square.constraints.filter(con => {
     return con.variable === 1 && con.col !== square.col;
   }).length;
-  // return square.constraints.filter(con => {
-  //   return con.variable === 1;
-  // }).length;
 }
 
 function findQueens(arr) {

@@ -11,20 +11,31 @@
   }
 
   span.y{
-    color: orange;
-    font-weight: bolder
+    height: 100%;
+    width: 100%;
+    background-color: #ffff0082;
+    color: purple;
+    font-weight: bolder;
   }
 
   span.x{
     text-align: center;
-    width: 40px; height: 40px;
-    background: grey;
-
+    width: 70px;
+    height: 70px;
+    align-items: center;
+    border: 1px solid black;
+    display: inline-flex;
+    /* background: grey; */
+    align-content: center;
+    align-self: center;
+    vertical-align: middle;
+    text-align: center;
   }
 
   span.x:nth-child(2n){
     background: white;
   }
+
   </style>
       <p id="d"></p>
     <script src="csp.js"></script>
