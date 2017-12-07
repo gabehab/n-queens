@@ -1,6 +1,6 @@
 function Square(variable, ind, row, col, neighbors, constraints) {
   //Define each square of the n-queen board
-  this.variable = variable;
+  this.variable = variable; //init = 0
   this.ind = ind;
   this.constraints = constraints || [];
   this.col = col;
@@ -12,10 +12,11 @@ function Square(variable, ind, row, col, neighbors, constraints) {
 
 
 let clone;
-let MAX = 100; //set the width of the square board(the MAX value)
+let MAX = 10; //set the width of the square board(the MAX value)
 window.arr = []; //arr is the BOARD of squares
 let c = 0; //init counter var;
 
+// GENERATE SQUARES IN BOARD
 for (let i = 0; i < MAX; i++) { //init the board of squares
   for (let x = 0; x < MAX; x++) {
     arr.push(new Square(0, c, i, x, null, null)); //add square to board
@@ -23,6 +24,7 @@ for (let i = 0; i < MAX; i++) { //init the board of squares
   }
 }
 
+// GENERATE CONSTRAINTS
 arr.forEach(o => { //generate constraints for each square of the board
   var init = o;
   arr.forEach(s => { //generate all col and row constraints
@@ -42,10 +44,6 @@ arr.forEach(o => { //generate constraints for each square of the board
   }
 });
 
-// arr.forEach(sq => { //remove the square if its constraints contain itself
-//   if (sq.constraints.indexOf(sq) >= 0) sq.constraints.splice(sq.constraints.indexOf(sq), 1)
-// })
-
 arr.forEach(sq => { //remove dups in constraints
   sq.constraints.forEach(x => {
     if (x.constraints.indexOf(x) >= 0) x.constraints.splice(x.constraints.indexOf(x), 1);
@@ -59,73 +57,70 @@ let itt = 0;
 let initialsq = [];
 //int MIN-CONFLICTS
 function init() {
+
+  //SMART INIT QUEEN PLACEMENT
   for (var ix = 0; ix < MAX; ix++) {
     //set up initial board
     let column = arr.filter(sqx => sqx.col === ix); //get current col to iterate
     // let sq = column[Math.floor(Math.random() * column.length)];
     let q = findBest(column); //fidn the best init spot for queen
-    // let q = column[Math.floor(Math.random() * column.length)];
-    // console.log("INIT", q.ind);
     q.variable = 1;
     initialsq.push(q.ind);
     arr.forEach(s => { //update boards conflicts each time
       s.flicts = updateCon(s);
     });
   }
+  // download();
 }
 let qd = [];
 let s1 = [];
 
-function main() {
+function minConflicts() {
   while (conx) {
     let old = 0;
     let nold = 0;
     let list;
-    let badSq;
+    let oldSquare;
     let newSq;
     let column;
     let q = 0;
 
     if (fin() === MAX) break; //if solved, break loop
 
-    badSq = findQueens(arr); //find all queens
-    badSq = findWorst(badSq); //find the highest conflict queens
-    column = arr.filter(sqx => (sqx.col === badSq.col && sqx.ind !== badSq.ind)); //find all sq in bad queen col
+    oldSquare = findQueens(arr); //find all queens
+    oldSquare = findWorst(oldSquare); //find the highest conflict queens
+    column = arr.filter(sqx => (sqx.col === oldSquare.col && sqx.ind !== oldSquare.ind)); //find all sq in bad queen col
     arr.forEach(s => { //update all squares conflicts
       s.flicts = updateCon(s);
-      if (s.ind !== badSq.ind) old += parseInt(s.flicts); //don't incldue self when comparing values
+      if (s.ind !== oldSquare.ind) old += parseInt(s.flicts); //don't incldue self when comparing values
     });
     //stats only (not appart of algo)
     column.forEach(s => q += s.flicts);
     qd.push(q);
     gdata.push(old);
+    s1.push(oldSquare.flicts); //stats only (not appart of algo)
+
     ///
 
     newSq = findBest(column);
 
     newSq.variable = 1;
-    badSq.variable = 0;
-    // console.log(newSq.variable, badSq.variable);
+    oldSquare.variable = 0;
+    // console.log(newSq.variable, oldSquare.variable);
 
     arr.forEach(s => { //update with new variable for new square
       s.flicts = updateCon(s);
       if (s.ind !== newSq.ind) nold += parseInt(s.flicts);
     });
 
-    if (newSq.flicts > badSq.flicts) { //check if new is better than old sq
+    if (newSq.flicts > oldSquare.flicts) { //check if new is better than old sq
       newSq.variable = 0;
-      badSq.variable = 1;
-      s1.push(badSq.flicts); //stats only (not appart of algo)
-    } else if (newSq.flicts === badSq.flicts) { //theyre the same
+      oldSquare.variable = 1;
+    } else if (newSq.flicts === oldSquare.flicts) { //theyre the same
       if (Math.floor(Math.random() * 2) === 0) { //50/50 coin flip to change back or not if same flicts
-        s1.push(badSq.flicts);
         newSq.variable = 0;
-        badSq.variable = 1;
-      } else {
-        s1.push(newSq.flicts); //stats only (not appart of algo)
+        oldSquare.variable = 1;
       }
-    } else {
-      s1.push(newSq.flicts); //stats only (not appart of algo)
     }
 
     itt++; //max iterations
@@ -142,11 +137,21 @@ function main() {
 }
 
 console.time("Time taken");
+
 init();
-main();
+minConflicts();
 console.timeEnd("Time taken");
 
 
+
+function newBoard(MAX2) {
+
+  MAX = MAX2;
+
+  init();
+  minConflicts();
+
+}
 
 
 function fin() { //check if squares are all solved
