@@ -12,7 +12,7 @@ function Square(variable, ind, row, col, neighbors, constraints) {
 
 
 let clone;
-let MAX = 10; //set the width of the square board(the MAX value)
+let MAX = 6; //set the width of the square board(the MAX value)
 window.arr = []; //arr is the BOARD of squares
 let c = 0; //init counter var;
 
@@ -274,10 +274,11 @@ new Chartist.Line('#qs', {
   series: [
     s1
   ]
-}, options);
+}
+  , options);
 
 // console.dir(arr);
-// printBoard();
+printBoard();
 function download() {
   let rowArray;
   let csvContent = "data:text/csv;charset=utf-8,";

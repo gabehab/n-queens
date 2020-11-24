@@ -1,56 +1,59 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
 
-<head>
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-  <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
+  <body>
+    <style>
+      p {
+        /*font-size: 24px;*/
+        font-family: sans-serif;
+        color: black;
+        text-align: center;
+      }
 
-<body>
-  <style>
-    p {
-      /*font-size: 24px;*/
-      font-family: sans-serif;
-      color: black;
-      text-align: center;
-    }
+      span.y {
+        height: 100%;
+        width: 100%;
+        background-color: #ffff0082;
+        color: purple;
+        font-weight: bolder;
+      }
 
-    span.y {
-      height: 100%;
-      width: 100%;
-      background-color: #ffff0082;
-      color: purple;
-      font-weight: bolder;
-    }
+      span.x {
+        text-align: center;
+        width: 20px;
+        height: 20px;
+        align-items: center;
+        border: 1px solid black;
+        display: inline-flex;
+        /* background: grey; */
+        align-content: center;
+        align-self: center;
+        vertical-align: middle;
+        text-align: center;
+      }
 
-    span.x {
-      text-align: center;
-      width: 20px;
-      height: 20px;
-      align-items: center;
-      border: 1px solid black;
-      display: inline-flex;
-      /* background: grey; */
-      align-content: center;
-      align-self: center;
-      vertical-align: middle;
-      text-align: center;
-    }
+      span.x:nth-child(2n) {
+        background: white;
+      }
+    </style>
+    <p id="d"></p>
+    <h1>Global conflicts through MIN-CONFLICTS</h1>
+    <div id="graph"></div>
 
-    span.x:nth-child(2n) {
-      background: white;
-    }
-  </style>
-  <p id="d"></p>
-  <h1>Global conflicts through MIN-CONFLICTS</h1>
-  <div id="graph"></div>
+    <h1>COLUMN only conflicts through MIN-CONFLICTS</h1>
+    <div id="qcon"></div>
 
-  <h1>COLUMN only conflicts through MIN-CONFLICTS</h1>
-  <div id="qcon"></div>
-
-  <h1>QUEEN only conflicts through MIN-CONFLICTS</h1>
-  <div id="qs"></div>
-  <script src="csp.js"></script>
-</body>
-
+    <h1>QUEEN only conflicts through MIN-CONFLICTS</h1>
+    <div id="qs"></div>
+    <script src="csp.js"></script>
+  </body>
 </html>
