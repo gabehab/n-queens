@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+  </head>
+
+  <body>
+    <style>
+      .board {
+        width: 100%;
+        height: 100%;
+      }
+
+      div.row {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+      }
+
+      div.square {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: beige;
+      }
+      div.square:nth-child(2n) {
+        background: grey;
+      }
+
+
+      p {
+        /*font-size: 24px;*/
+        font-family: sans-serif;
+        color: black;
+        text-align: center;
+      }
+
+      span.y {
+        height: 100%;
+        width: 100%;
+        background-color: #ffff0082;
+        color: purple;
+        font-weight: bolder;
+      }
+
+      span.x {
+        text-align: center;
+        width: 20px;
+        height: 20px;
+        align-items: center;
+        border: 1px solid black;
+        display: inline-flex;
+        /* background: grey; */
+        align-content: center;
+        align-self: center;
+        vertical-align: middle;
+        text-align: center;
+      }
+
+      span.x:nth-child(2n) {
+        background: white;
+      }
+    </style>
+    <div class="board"></div>
+
+    <script type="module" src="setup.js"></script>
+  </body>
+</html>

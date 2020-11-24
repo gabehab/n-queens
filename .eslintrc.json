@@ -1,0 +1,17 @@
+{
+    "env": {
+        "amd": true,
+        "node": true,
+        "es6": true
+    },
+    "extends": ["eslint:recommended"],
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaVersion": 2018,
+        "async": true
+    },
+    "rules": {
+        "no-console": "off",
+        "semi": "off"
+    }
+}
